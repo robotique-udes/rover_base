@@ -6,3 +6,4 @@ Inclure les messages custom sur Arduino avec VSCode:
 3- Lancer roscore
 4- Naviguer en command line jusqu'au répertoire "lib" de ton projet VSCode
 5- Lancer rosrun rosserial_arduino make_libraries.py .
+6- Dans VSCode, ajouter #include <rover_control/_leMessageQuOnVeutInclure_.h>
