@@ -8,7 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QShortcut, QSlider, QAbstractSlider, QSpinBox
-from rover_control.msg import CamCommand
+from rover_udes.msg import CamCommand
 from std_msgs.msg import Bool
 
 
@@ -21,7 +21,7 @@ class RoverCamControlWidget(QtWidgets.QWidget):
         loadUi(ui_file, self)
         self.setObjectName('RoverCamControlWidget')
 
-        self.is_active = False
+        self.is_pano = False
 
         self.cam_horizontal_pos = 0
         self.cam_vertical_pos = 0
@@ -64,7 +64,7 @@ class RoverCamControlWidget(QtWidgets.QWidget):
         self.pano_cmd_pub = rospy.Publisher('stitch_pano', Bool, queue_size=10)
 
         self.take_photo_btn.clicked.connect(self.publish_photo_cmd)
-        self.stitch_pano_btn.clicked.connect(self.publish_pano_cmd)
+        self.stitch_pano_btn.clicked.connect(self.cam_pano_btn_callback)
 
     def init_fields(self):
         self.cam_horizontal_field.setValue(0)
@@ -80,6 +80,8 @@ class RoverCamControlWidget(QtWidgets.QWidget):
 
         self.cam_horizontal_pos_signal = 0
         self.cam_vertical_pos_signal = 0
+
+        self.is_pano = False
 
         self.update_command()
 
@@ -106,6 +108,10 @@ class RoverCamControlWidget(QtWidgets.QWidget):
     def cam_keyboard_check_box_callback(self):
         self.update_command()
 
+    def cam_pano_btn_callback(self):
+        self.is_pano = True
+        self.publish_pano_cmd()
+
     def update_sliders(self):
         self.cam_horizontal_pos = self.cam_horizontal_field.value()
         self.cam_vertical_pos = self.cam_vertical_field.value()
@@ -130,14 +136,13 @@ class RoverCamControlWidget(QtWidgets.QWidget):
 
         self.cam_update_btn.setDown(True)
 
-        self.is_active = self.cam_keyboard_check_box.isChecked()
-
     def publish_command(self, event):
         command = CamCommand()
         command.cam_horizontal = self.cam_horizontal_pos_signal
         command.cam_vertical = self.cam_vertical_pos_signal
-        command.is_active = self.is_active
+        command.is_pano = self.is_pano
         self.cam_cmd_pub.publish(command)
+        self.is_pano = False
 
     def publish_photo_cmd(self, event):
         msg = Bool()
