@@ -141,7 +141,7 @@ class RoverCamControlWidget(QtWidgets.QWidget):
         command = CamCommand()
         command.cam_horizontal = self.cam_horizontal_pos_signal
         command.cam_vertical = self.cam_vertical_pos_signal
-        command.is_active = self.is_active
+        command.is_pano = self.is_active
         self.cam_cmd_pub.publish(command)
 
     def publish_photo_cmd(self, event):
