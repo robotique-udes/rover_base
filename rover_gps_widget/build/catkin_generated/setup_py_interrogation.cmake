@@ -1,0 +1,7 @@
+set(rover_gps_widget_SETUP_PY_SETUP_MODULE "distutils.core")
+set(rover_gps_widget_SETUP_PY_VERSION "0.0.0")
+set(rover_gps_widget_SETUP_PY_SCRIPTS "scripts/rover_gps_widget")
+set(rover_gps_widget_SETUP_PY_PACKAGES "rover_gps_widget")
+set(rover_gps_widget_SETUP_PY_PACKAGE_DIRS "src/rover_gps_widget")
+set(rover_gps_widget_SETUP_PY_MODULES "")
+set(rover_gps_widget_SETUP_PY_MODULE_DIRS "")

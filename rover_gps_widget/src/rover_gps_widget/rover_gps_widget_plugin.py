@@ -6,7 +6,7 @@ import rosnode
 from rospkg import RosPack
 from python_qt_binding import loadUi
 from PyQt5 import QtCore, QtGui, QtWidgets
-from rover_gps_widget_widget import RoverGpsWidgetWidget
+from rover_gps_widget.rover_gps_widget_widget import RoverGpsWidgetWidget
 from qt_gui.plugin import Plugin
 import subprocess
 

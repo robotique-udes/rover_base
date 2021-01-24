@@ -1,0 +1,65 @@
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/warp/catkin_ws/src/rover_base/rover_gps_widget/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_beede/fast && /usr/bin/make  -f CMakeFiles/cmTC_beede.dir/build.make CMakeFiles/cmTC_beede.dir/build
+make[1] : on entre dans le répertoire « /home/warp/catkin_ws/src/rover_base/rover_gps_widget/build/CMakeFiles/CMakeTmp »
+Building C object CMakeFiles/cmTC_beede.dir/src.c.o
+/usr/bin/x86_64-linux-gnu-gcc-8   -DCMAKE_HAVE_LIBC_PTHREAD -o CMakeFiles/cmTC_beede.dir/src.c.o -c /home/warp/catkin_ws/src/rover_base/rover_gps_widget/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_beede
+/usr/local/lib/python3.6/dist-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/cmTC_beede.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-8  -DCMAKE_HAVE_LIBC_PTHREAD -rdynamic CMakeFiles/cmTC_beede.dir/src.c.o -o cmTC_beede 
+CMakeFiles/cmTC_beede.dir/src.c.o : Dans la fonction « main » :
+src.c:(.text+0x3e) : référence indéfinie vers « pthread_create »
+src.c:(.text+0x4a) : référence indéfinie vers « pthread_detach »
+src.c:(.text+0x56) : référence indéfinie vers « pthread_cancel »
+src.c:(.text+0x67) : référence indéfinie vers « pthread_join »
+src.c:(.text+0x7b) : référence indéfinie vers « pthread_atfork »
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_beede.dir/build.make:105: recipe for target 'cmTC_beede' failed
+make[1]: *** [cmTC_beede] Error 1
+make[1] : on quitte le répertoire « /home/warp/catkin_ws/src/rover_base/rover_gps_widget/build/CMakeFiles/CMakeTmp »
+Makefile:140: recipe for target 'cmTC_beede/fast' failed
+make: *** [cmTC_beede/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/warp/catkin_ws/src/rover_base/rover_gps_widget/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_42d5d/fast && /usr/bin/make  -f CMakeFiles/cmTC_42d5d.dir/build.make CMakeFiles/cmTC_42d5d.dir/build
+make[1] : on entre dans le répertoire « /home/warp/catkin_ws/src/rover_base/rover_gps_widget/build/CMakeFiles/CMakeTmp »
+Building C object CMakeFiles/cmTC_42d5d.dir/CheckFunctionExists.c.o
+/usr/bin/x86_64-linux-gnu-gcc-8   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_42d5d.dir/CheckFunctionExists.c.o -c /usr/local/lib/python3.6/dist-packages/cmake/data/share/cmake-3.18/Modules/CheckFunctionExists.c
+Linking C executable cmTC_42d5d
+/usr/local/lib/python3.6/dist-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/cmTC_42d5d.dir/link.txt --verbose=1
+/usr/bin/x86_64-linux-gnu-gcc-8  -DCHECK_FUNCTION_EXISTS=pthread_create -rdynamic CMakeFiles/cmTC_42d5d.dir/CheckFunctionExists.c.o -o cmTC_42d5d  -lpthreads 
+/usr/bin/ld : ne peut trouver -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_42d5d.dir/build.make:105: recipe for target 'cmTC_42d5d' failed
+make[1]: *** [cmTC_42d5d] Error 1
+make[1] : on quitte le répertoire « /home/warp/catkin_ws/src/rover_base/rover_gps_widget/build/CMakeFiles/CMakeTmp »
+Makefile:140: recipe for target 'cmTC_42d5d/fast' failed
+make: *** [cmTC_42d5d/fast] Error 2
+
+
+

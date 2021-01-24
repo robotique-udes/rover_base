@@ -2,7 +2,7 @@
 
 import sys
 
-from rover_gps_widget.rover_gps_widget_plugin import RoverGpsWidgetPlugin
+from rover_gps_widget import RoverGpsWidgetPlugin
 from rqt_gui.main import Main
 
 plugin = 'rover_gps_widget_plugin'

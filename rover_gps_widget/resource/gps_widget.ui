@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>gps_widget</class>
+ <widget class="QWidget" name="gps_widget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>574</width>
-    <height>360</height>
+    <width>938</width>
+    <height>647</height>
    </rect>
   </property>
   <property name="contextMenuPolicy">
@@ -19,254 +19,456 @@
   <property name="windowTitle">
    <string>GPS Nav</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <item row="6" column="2">
-      <widget class="QLabel" name="cam_horizontal_label">
-       <property name="text">
-        <string>Hozizontal pos.</string>
+     <item row="2" column="0" colspan="2">
+      <widget class="QListView" name="listView">
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="2" colspan="2">
-      <widget class="QPushButton" name="cam_update_btn">
-       <property name="text">
-        <string>Update</string>
-       </property>
-      </widget>
-     </item>
-     <item row="11" column="4">
-      <widget class="QPushButton" name="cam_down_btn">
-       <property name="maximumSize">
-        <size>
-         <width>150</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Down</string>
-       </property>
-      </widget>
-     </item>
-     <item row="11" column="1">
-      <widget class="QPushButton" name="cam_left_btn">
-       <property name="maximumSize">
-        <size>
-         <width>150</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Left</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="3">
-      <widget class="QSpinBox" name="cam_vertical_pos_info">
-       <property name="enabled">
+       <property name="tabKeyNavigation">
         <bool>true</bool>
        </property>
-       <property name="frame">
+       <property name="dragEnabled">
         <bool>true</bool>
        </property>
-       <property name="readOnly">
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::InternalMove</enum>
+       </property>
+       <property name="defaultDropAction">
+        <enum>Qt::MoveAction</enum>
+       </property>
+       <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
-       <property name="buttonSymbols">
-        <enum>QAbstractSpinBox::NoButtons</enum>
-       </property>
-       <property name="minimum">
-        <number>-90</number>
-       </property>
-       <property name="maximum">
-        <number>90</number>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
        </property>
       </widget>
      </item>
-     <item row="11" column="2">
-      <widget class="QSpinBox" name="cam_horizontal_field">
-       <property name="minimum">
-        <number>-180</number>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="lineEdit_file">
+       <property name="inputMask">
+        <string/>
        </property>
-       <property name="maximum">
-        <number>180</number>
+       <property name="dragEnabled">
+        <bool>true</bool>
        </property>
-      </widget>
-     </item>
-     <item row="10" column="4">
-      <spacer name="verticalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="8" column="4">
-      <widget class="QSpinBox" name="cam_vertical_field">
-       <property name="minimum">
-        <number>-90</number>
-       </property>
-       <property name="maximum">
-        <number>90</number>
+       <property name="placeholderText">
+        <string>File path</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="7" rowspan="7">
-      <widget class="QSlider" name="cam_vertical_slider">
-       <property name="minimum">
-        <number>-90</number>
-       </property>
-       <property name="maximum">
-        <number>90</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="1">
-      <widget class="QCheckBox" name="cam_keyboard_check_box">
+     <item row="1" column="3">
+      <widget class="QCheckBox" name="checkBox_edit">
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
        </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
        <property name="text">
-        <string>Keyboard</string>
+        <string>Edit entry</string>
        </property>
-      </widget>
-     </item>
-     <item row="11" column="3">
-      <widget class="QPushButton" name="cam_right_btn">
-       <property name="text">
-        <string>Right</string>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
        </property>
-      </widget>
-     </item>
-     <item row="13" column="1" colspan="3">
-      <widget class="QSlider" name="cam_horizontal_slider">
-       <property name="minimum">
-        <number>-180</number>
+       <property name="checked">
+        <bool>false</bool>
        </property>
-       <property name="maximum">
-        <number>180</number>
+       <property name="autoRepeat">
+        <bool>false</bool>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="autoExclusive">
+        <bool>false</bool>
        </property>
-      </widget>
-     </item>
-     <item row="8" column="1">
-      <widget class="QPushButton" name="cam_reset_btn">
-       <property name="text">
-        <string>Reset</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="2">
-      <widget class="QSpinBox" name="cam_horizontal_pos_info">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-       <property name="buttonSymbols">
-        <enum>QAbstractSpinBox::NoButtons</enum>
-       </property>
-       <property name="minimum">
-        <number>-180</number>
-       </property>
-       <property name="maximum">
-        <number>180</number>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="3">
-      <widget class="QLabel" name="cam_vertical_label">
-       <property name="text">
-        <string>Vertical pos.</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-       </property>
-       <property name="wordWrap">
+       <property name="tristate">
         <bool>false</bool>
        </property>
       </widget>
      </item>
-     <item row="6" column="4">
-      <spacer name="verticalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
+     <item row="2" column="2" rowspan="2" colspan="2">
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0" colspan="2">
+        <widget class="Line" name="line_top">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_currentName">
+         <property name="text">
+          <string>Name:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lineEdit_currentCoord">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_currentLat">
+         <property name="text">
+          <string>Latitude:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_currentLat">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_currentLong">
+         <property name="text">
+          <string>Longitude:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_currentLong">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_currentDistance">
+         <property name="text">
+          <string>Distance (m):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_currentDistance">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_currentDuration">
+         <property name="text">
+          <string>Duration (min):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_currentDuration">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_currentHeading">
+         <property name="text">
+          <string>Heading:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_currentHeading">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="2">
+        <widget class="Line" name="line_current_preceding">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_precedingName">
+         <property name="text">
+          <string>Preceded by:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QLineEdit" name="lineEdit_precedingCoord">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_precedingLat">
+         <property name="text">
+          <string>Latitude:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_precedingLat">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="label_precedingLong">
+         <property name="text">
+          <string>Longitude:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_precedingLong">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="label_precedingDistance">
+         <property name="text">
+          <string>Distance (m):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_precedingDistance">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="0">
+        <widget class="QLabel" name="label_precedingDuration">
+         <property name="text">
+          <string>Duration (s):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_precedingDuration">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="0">
+        <widget class="QLabel" name="label_precedingHeading">
+         <property name="text">
+          <string>Heading:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="0" colspan="2">
+        <widget class="Line" name="line_preceding_next">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="0">
+        <widget class="QLabel" name="label_nextName">
+         <property name="text">
+          <string>Followed by:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="1">
+        <widget class="QLineEdit" name="lineEdit_nextCoord">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="0">
+        <widget class="QLabel" name="label_nextLat">
+         <property name="text">
+          <string>Latitude:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="17" column="0">
+        <widget class="QLabel" name="label_nextLong">
+         <property name="text">
+          <string>Longitude:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="18" column="0">
+        <widget class="QLabel" name="label_nextDistance">
+         <property name="text">
+          <string>Distance (m):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="19" column="0">
+        <widget class="QLabel" name="label_nextDuration">
+         <property name="text">
+          <string>Duration (s):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="20" column="0">
+        <widget class="QLabel" name="label_nextHeading">
+         <property name="text">
+          <string>Heading:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_precedingHeading">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_nextLat">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="17" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_nextLong">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="18" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_nextDistance">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="19" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_nextDuration">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="20" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_nextHeading">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
-     <item row="5" column="4">
-      <widget class="QPushButton" name="cam_up_btn">
+     <item row="1" column="2">
+      <widget class="QPushButton" name="pushButton_open">
        <property name="maximumSize">
         <size>
-         <width>150</width>
+         <width>100</width>
          <height>16777215</height>
         </size>
        </property>
+       <property name="acceptDrops">
+        <bool>true</bool>
+       </property>
        <property name="text">
-        <string>Up</string>
+        <string>Open</string>
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+     <item row="1" column="1">
+      <widget class="QToolButton" name="toolButton">
+       <property name="text">
+        <string>...</string>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
+      </widget>
      </item>
-     <item row="5" column="1" colspan="2">
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QPushButton" name="pano_btn">
+     <item row="3" column="0" colspan="2">
+      <layout class="QGridLayout" name="gridLayout_bottom">
+       <item row="0" column="0">
+        <widget class="QPushButton" name="pushButton_start_pause_resume">
+         <property name="acceptDrops">
+          <bool>true</bool>
+         </property>
          <property name="text">
-          <string>Panorama ON</string>
+          <string>Go</string>
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QPushButton" name="take_photo_btn">
+       <item row="0" column="4">
+        <widget class="QPushButton" name="pushButton_down">
+         <property name="maximumSize">
+          <size>
+           <width>60</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="text">
-          <string>Take Photo</string>
+          <string>▼</string>
+         </property>
+         <property name="shortcut">
+          <string>Alt+Down</string>
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QPushButton" name="stitch_pano_btn">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="pushButton_stop">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="acceptDrops">
+          <bool>true</bool>
+         </property>
          <property name="text">
-          <string>Stitch</string>
+          <string>Stop</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <widget class="QPushButton" name="pushButton_up">
+         <property name="maximumSize">
+          <size>
+           <width>60</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>▲</string>
+         </property>
+         <property name="shortcut">
+          <string>Alt+Up</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="pushButton_goBack">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Go back</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QPushButton" name="pushButton_manual">
+         <property name="text">
+          <string>Manual drive</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="6">
+        <widget class="QProgressBar" name="progressBar">
+         <property name="value">
+          <number>24</number>
          </property>
         </widget>
        </item>

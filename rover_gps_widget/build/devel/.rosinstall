@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/warp/catkin_ws/src/rover_base/rover_gps_widget/build/devel/setup.sh

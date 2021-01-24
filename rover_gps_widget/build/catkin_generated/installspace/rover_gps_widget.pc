@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: rover_gps_widget
+Description: Description of rover_gps_widget
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
