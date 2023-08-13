@@ -129,7 +129,7 @@ class RoverControllerGuiWidget(QtWidgets.QWidget):
     # Timer Callback: Update UI with correspond current position
     def updateCurrentPosition(self, timer_obj: rospy.Timer):
         with self.lock_position:
-            self.pb_curr_position.setText(str(self.current_latitude) + ", " + str(self.current_longitude))
+            self.pb_curr_position.setText(str(round(self.current_latitude, 4)) + ", " + str(round(self.current_longitude, 4)))
             self.pb_curr_heading.setText(str(self.current_heading) + "°")
 
             label: str = self.cb_waypoint_label.currentText()
@@ -249,7 +249,7 @@ class RoverControllerGuiWidget(QtWidgets.QWidget):
                 pass 
 
             if (i == 0):
-                pub.publish(270.0)
+                pub.publish(180.0)
             elif (i > 1):
                 pub.publish(-90.0)
             else:
