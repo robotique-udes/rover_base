@@ -148,27 +148,28 @@ class RoverControllerGuiWidget(QtWidgets.QWidget):
         if not self.checkIfServicePosted(CAMERA_CONTROL_SERVICE_NAME, button):
             return
 
-        try:
-            camera_control_service: rospy.ServiceProxy = rospy.ServiceProxy(CAMERA_CONTROL_SERVICE_NAME, camera_control)
-            data: camera_controlResponse = camera_control_service(camera_controlRequest.CMD_DETECT_ARUCO)
-            detected_aruco_marker = list(data.detected_aruco_marker)
+        # try:
+        camera_control_service: rospy.ServiceProxy = rospy.ServiceProxy(CAMERA_CONTROL_SERVICE_NAME, camera_control)
+        data: camera_controlResponse = camera_control_service(camera_controlRequest.CMD_DETECT_ARUCO, "/cam_desaxee/image")
+        detected_aruco_marker = list(data.detected_aruco_marker)
 
-            feedback: str = ""
-            for aruco_marker_ids in detected_aruco_marker:
-                if aruco_marker_ids in self.last_detected_marker:
-                    feedback = feedback + str(aruco_marker_ids) + " | "
+        feedback: str = ""
+        for aruco_marker_ids in detected_aruco_marker:
+            if aruco_marker_ids in self.last_detected_marker:
+                feedback = feedback + str(aruco_marker_ids) + " | "
 
-            if feedback != "":
-                feedback = feedback[:-2]
+        if feedback != "":
+            feedback = feedback[:-2]
 
-            if button.styleSheet != STYLE_DEFAULT: 
-                button.setStyleSheet(STYLE_DEFAULT)
-            button.setText(feedback)
+        if button.styleSheet != STYLE_DEFAULT: 
+            button.setStyleSheet(STYLE_DEFAULT)
+        button.setText(feedback)
 
-            self.last_detected_marker = detected_aruco_marker
+        self.last_detected_marker = detected_aruco_marker
 
-        except:
-            rospy.logwarn(rospy.get_name() + "|" + self.name + " " + "Error while trying to get aruco markers")
+        # except Exception as e:
+        #     rospy.logwarn(rospy.get_name() + "|" + self.name + " " + "Error while trying to get aruco markers")
+        #     raise e
 
     # Subscriber Callback: Update current position members with GPS data
     def cbGPSData(self, data: gps):

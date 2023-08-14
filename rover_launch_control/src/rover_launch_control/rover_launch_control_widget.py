@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import QLabel, QPushButton, QAbstractButton, QComboBox, QAp
 from threading import Lock
 from copy import copy
 import rosservice
+from rover_control_msgs.srv import camera_control
 
 # Styling "MACROS"
 STYLE_DEFAULT = ""
@@ -23,7 +24,7 @@ STYLE_LIMITING = "color: black; background-color: yellow"
 STYLE_WARN = "color: black; background-color: rgb(255, 124, 0);"
 
 # Service name
-CAMERA_SERVICE_NAME = "/camera_control_server/camera_control"
+CAMERA_SERVICE_NAME = "/camera_control_server"
 
 # Global Variables
 launchmode_local = 'false'
@@ -372,8 +373,8 @@ class CameraLaunch(QtWidgets.QWidget):
                                                                                    self.pb_current_cam_base_bras_framerate))
         
         # Take picture and panorama
-        self.pb_photo.released.connect(lambda: self.takePicture(1, self.topic_camera, self.pb_photo))
-        self.pb_panorama.released.connect(lambda: self.takePicture(5, self.topic_camera, self.pb_panorama))
+        self.pb_photo.released.connect(lambda: self.takePicture(1, self.cb_topic_camera, self.pb_photo))
+        self.pb_panorama.released.connect(lambda: self.takePicture(5, self.cb_topic_camera, self.pb_panorama))
 
 
 
@@ -454,7 +455,7 @@ class CameraLaunch(QtWidgets.QWidget):
             bandwidth_interface._flag = False
             pb_current_bw.setText(str(bandwidth_interface.bw) + "/s")
 
-    def takePicture(self, cmd: int, camera_topic: str, button: QPushButton):
+    def takePicture(self, cmd: int, camera_topic: QComboBox, button: QPushButton):
         """
         Crée un object rospy.ServiceProxy qui va te permettre de call ton service comme une fonction
         ex: service = rospy.Ser........
@@ -469,14 +470,16 @@ class CameraLaunch(QtWidgets.QWidget):
 
         QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         try :
-            rospy.wait_for_service(CAMERA_SERVICE_NAME, rospy.Duration(1.0))
+            rospy.wait_for_service(CAMERA_SERVICE_NAME, rospy.Duration(3.0))
 
             camera_control_service: rospy.ServiceProxy = rospy.ServiceProxy(CAMERA_SERVICE_NAME, camera_control)
                         
-            camera_control_service(cmd, camera_topic)
+            camera_control_service(cmd, camera_topic.currentText())
 
-        except:
+        except Exception as e:
             rospy.logwarn("Error taking picture")
             button.setStyleSheet(STYLE_WARN)
+            raise e
+        
         finally:
             QApplication.restoreOverrideCursor()
