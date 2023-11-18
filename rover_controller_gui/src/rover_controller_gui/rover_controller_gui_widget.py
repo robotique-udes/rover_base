@@ -7,7 +7,8 @@ import rospy
 import rosservice
 from python_qt_binding import loadUi
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QPushButton, QComboBox, QApplication, QDoubleSpinBox, QLineEdit, QWidget, QFileDialog
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QPushButton, QComboBox, QApplication, QDoubleSpinBox, QLineEdit, QWidget, QFileDialog, QGraphicsScene
 from robotnik_msgs.msg import inputs_outputs
 from robotnik_msgs.srv import set_digital_output
 from std_srvs.srv import SetBool
@@ -18,6 +19,8 @@ import math
 sys.path.insert(0, rospkg.RosPack().get_path('rover_launch_control'))
 from src.rover_launch_control.rover_launch_control_widget import RoverLaunchControlWidget
 
+sys.path.insert(0, rospkg.RosPack().get_path('rover_map_gui'))
+from src.rover_map_gui.rover_map_gui_widget import RoverMapGuiWidget
 from rover_control_msgs.srv import camera_control
 from rover_control_msgs.srv import camera_controlRequest
 from rover_control_msgs.srv import camera_controlResponse
@@ -53,6 +56,7 @@ class RoverControllerGuiWidget(QtWidgets.QWidget):
         self.pb_curr_position: QPushButton
         self.pb_curr_heading: QPushButton
         self.pb_target_heading: QPushButton
+
         
         self.name: str = "RoverControllerGuiWidget"
         super(RoverControllerGuiWidget, self).__init__()
@@ -66,6 +70,12 @@ class RoverControllerGuiWidget(QtWidgets.QWidget):
         self.launcher_flag: bool = False
         self.rover_launch_control_widget = RoverLaunchControlWidget()
         self.pb_launcher_ui.released.connect(lambda: self.launcherPluginCallback(self.pb_launcher_ui))
+
+        # Rover Map UI
+        self.map_started: bool = False
+        self.map_flag: bool = False
+        self.rover_map_gui_widget = RoverMapGuiWidget()
+        self.pb_launch_map.released.connect(lambda: self.mapPluginCallback(self.pb_launch_map))
 
         # Lights
         self.pb_lights.released.connect(lambda: self.toggleRelay(self.pb_lights, 1))
@@ -188,6 +198,16 @@ class RoverControllerGuiWidget(QtWidgets.QWidget):
             self.context.remove_widget(self.rover_launch_control_widget)
             
         self.launcher_started = not self.launcher_started
+
+    # Button Callback: Adds (or remove) RoverMapGui from rqt but keeps 
+    # object reference
+    def mapPluginCallback(self, button: QPushButton):
+        if not self.map_started:
+            self.context.add_widget(self.rover_map_gui_widget)
+        else:
+            self.context.remove_widget(self.rover_map_gui_widget)
+            
+        self.map_started = not self.map_started
 
     # Button Callback: Wait for realy board msg and switch the state accordingly
     def toggleRelay(self, button: QPushButton, index: int):

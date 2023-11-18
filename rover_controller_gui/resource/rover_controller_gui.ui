@@ -121,6 +121,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="pb_launch_map">
+         <property name="text">
+          <string>Launch Map</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="label">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
