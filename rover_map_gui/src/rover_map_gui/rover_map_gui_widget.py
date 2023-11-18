@@ -23,11 +23,6 @@ class RoverMapGuiWidget(QtWidgets.QWidget):
         self.name: str = "RoverMapGuiWidget"
         super(RoverMapGuiWidget, self).__init__()
 
-        # Locate and load the UI file for the RoverMap GUI
-        ui_file = os.path.join(rospkg.RosPack().get_path('rover_map_gui'), 'resource', 'rover_map_gui.ui')
-        loadUi(ui_file, self)
-        self.setObjectName('RoverMapGuiWidget')
-
         # Paths to UI and resource files
         ui_file = os.path.join(rospkg.RosPack().get_path('rover_map_gui'), 'resource', 'rover_map_gui.ui')
         map_image_path = os.path.join(rospkg.RosPack().get_path('rover_map_gui'), 'resource', 'studio_map.png')
@@ -41,32 +36,31 @@ class RoverMapGuiWidget(QtWidgets.QWidget):
         self.scene: QGraphicsScene = QGraphicsScene(self)
 
         # Load the rover icon with the size and position
-        self.rover_logo_pixmap: QPixmap = QPixmap(rover_logo_path).scaled(40, 40, QtCore.Qt.KeepAspectRatio)
+        self.rover_logo_size = 25
+        self.rover_logo_pixmap: QPixmap = QPixmap(rover_logo_path).scaled(self.rover_logo_size, self.rover_logo_size, QtCore.Qt.KeepAspectRatio)
         #pixmap_resized = pixmap.scaled(720, 405, QtCore.Qt.KeepAspectRatio)
 
-        self.map_image = self.scene.addPixmap(QPixmap(map_image_path))
+        self.map_image = self.scene.addPixmap(QPixmap(map_image_path).scaled(700,700, QtCore.Qt.KeepAspectRatio))
         #self.rover_icon = self.scene.addPixmap(self.rover_logo_pixmap)
 
         # Set the QPixmap to QLabel
         self.lb_rover_icon.setPixmap(self.rover_logo_pixmap)
-        self.lb_rover_icon.move(400, 350)
+        self.lb_rover_icon.move(730, 342)
         self.lb_rover_icon.setFixedWidth(600)
         self.lb_rover_icon.setFixedHeight(600)
         #self.rover_icon.hide()  # hide until we have GPS data
 
-        #top-left reference point
-        self.min_coord_x = float(0.0)
-        self.min_coord_y = float(0.0)
-        self.min_coord_lon = float(45.22443)
-        self.min_coord_lat = float(-71.55367)
-
         self.earth_radius = 6371
 
-        #bottom-right reference point
-        self.max_coord_x = self.rover_logo_pixmap.width()
-        self.max_coord_y = self.rover_logo_pixmap.height()
-        self.max_coord_lon = 45.376675
-        self.max_coord_lat = -71.923212
+        # Calculate global X and Y for top-left reference point        
+        self.p0 = ReferencePoint(38, -275, 45.379342, -71.924912)
+        # Calculate global X and Y for bottom-right reference point
+        self.p1 = ReferencePoint(735, 350, 45.378358, -71.923317)
+
+        # Calculate global X and Y for top-left reference point
+        self.p0.pos = self.latlngToGlobalXY(self.p0.lat, self.p0.lng)
+        # Calculate global X and Y for bottom-right reference point
+        self.p1.pos = self.latlngToGlobalXY(self.p1.lat, self.p1.lng)
         
         self.lock_position: Lock = Lock()
         with self.lock_position:
@@ -85,9 +79,11 @@ class RoverMapGuiWidget(QtWidgets.QWidget):
     # Timer Callback: Update UI with correspond current position
     def updateCurrentPosition(self, timer_obj: rospy.Timer):
         with self.lock_position:
-            x_pixel, y_pixel = self.gpsToScreenXY(self.current_latitude, self.current_longitude)
+            pos = self.latlngToScreenXY(self.current_latitude, self.current_longitude)
+            print('x_position : ', pos["x"])
+            print('y_position : ', pos["y"])
             if hasattr(self, 'lb_rover_icon') and self.lb_rover_icon:
-                self.lb_rover_icon.move(x_pixel, y_pixel)
+                self.lb_rover_icon.move(pos["x"], pos["y"])
                 # Ensure the rover icon is visible on the map.
                 self.lb_rover_icon.show()
             else:
@@ -102,27 +98,29 @@ class RoverMapGuiWidget(QtWidgets.QWidget):
             self.height = data.height
 
     #https://stackoverflow.com/questions/16266809/convert-from-latitude-longitude-to-x-y
-    def gpsToGlobalXY(self, latitude, longitude):
+    # This function converts lat and lng coordinates to GLOBAL X and Y positions
+    def latlngToGlobalXY(self, lat, lng):
         # Calculates x based on cos of average of the latitudes
-        x = self.earth_radius * longitude * math.cos((self.min_coord_lat + self.max_coord_lat)/2)
+        x = self.earth_radius*lng*math.cos((self.p0.lat + self.p1.lat)/2)
         # Calculates y based on latitude
-        y = self.earth_radius * latitude
+        y = self.earth_radius*lat
+        return {'x': x, 'y': y}
 
-        return x, y
     
-    
-    def gpsToScreenXY(self, latitude, longitude):
-        posX, posY = self.gpsToGlobalXY(latitude, longitude)
-        
-        perX = (posX - self.min_coord_x) / (self.max_coord_x - self.min_coord_x)
-        perY = (posY - self.min_coord_y) / (self.max_coord_y - self.min_coord_y)
+    # This function converts lat and lng coordinates to SCREEN X and Y positions
+    def latlngToScreenXY(self, lat, lng):
+        # Calculate global X and Y for projection point
+        pos = self.latlngToGlobalXY(lat, lng)
+        # Calculate the percentage of Global X position in relation to total global width
+        perX = ((pos['x']-self.p0.pos['x'])/(self.p1.pos['x'] - self.p0.pos['x']))
+        # Calculate the percentage of Global Y position in relation to total global height
+        perY = ((pos['y']-self.p0.pos['y'])/(self.p1.pos['y'] - self.p0.pos['y']))
 
-        # Calculate the screen coordinates
-        x = self.min_coord_x + (self.max_coord_x - self.min_coord_x) * perX
-        y = self.min_coord_y + (self.max_coord_y - self.min_coord_y) * perY
-
-        # Return the screen coordinates
-        return x, y
+        # Returns the screen position based on reference points
+        return {
+            'x': self.p0.scrX + (self.p1.scrX - self.p0.scrX)*perX,
+            'y': self.p0.scrY + (self.p1.scrY - self.p0.scrY)*perY
+        }
     
     
     def closePopUp(self):
@@ -130,3 +128,10 @@ class RoverMapGuiWidget(QtWidgets.QWidget):
         # Consider not using `del self` unless absolutely necessary
 
 
+
+class ReferencePoint:
+    def __init__(self, scrX, scrY, lat, lng):
+        self.scrX = scrX
+        self.scrY = scrY
+        self.lat = lat
+        self.lng = lng
