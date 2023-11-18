@@ -34,6 +34,8 @@ class RoverMapGuiWidget(QtWidgets.QWidget):
 
         # Initialize the graphics scene
         self.scene: QGraphicsScene = QGraphicsScene(self)
+        self.lb_curr_position: QLineEdit
+        self.lb_curr_xy_coord: QLineEdit
 
         # Load the rover icon with the size and position
         self.rover_logo_size = 25
@@ -80,6 +82,10 @@ class RoverMapGuiWidget(QtWidgets.QWidget):
     def updateCurrentPosition(self, timer_obj: rospy.Timer):
         with self.lock_position:
             pos = self.latlngToScreenXY(self.current_latitude, self.current_longitude)
+
+            self.lb_curr_position.setText("lat : " + str(round(self.current_latitude, 4)) + ", lon : " + str(round(self.current_longitude, 4)))
+            self.lb_curr_xy_coord.setText("XY : (" + str(round(pos["x"], 4)) + ", " + str(round(pos["y"], 4)) + ")")
+
             print('x_position : ', pos["x"])
             print('y_position : ', pos["y"])
             if hasattr(self, 'lb_rover_icon') and self.lb_rover_icon:
