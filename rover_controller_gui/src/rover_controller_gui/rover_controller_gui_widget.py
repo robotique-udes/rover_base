@@ -316,7 +316,7 @@ class RoverControllerGuiWidget(QtWidgets.QWidget):
         try:
             file = open(FILE_NAME_RECORDED_POSITION, "a")
             with self.lock_position:
-                file.write(label + " " + str(self.current_latitude) + " " + str(self.current_latitude) + " " + str(datetime.now()) + "\n")
+                file.write(label + " " + str(self.current_latitude) + " " + str(self.current_longitude) + " " + str(datetime.now()) + "\n")
             file.close()
         except:
             rospy.logwarn(self.name + ": Error writing waypoint to file try again")

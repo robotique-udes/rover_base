@@ -163,7 +163,7 @@
   <widget class="QLabel" name="lb_curr_position">
    <property name="geometry">
     <rect>
-     <x>520</x>
+     <x>460</x>
      <y>670</y>
      <width>261</width>
      <height>20</height>
@@ -185,7 +185,7 @@
   <widget class="QLabel" name="lb_curr_xy_coord">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>80</x>
      <y>670</y>
      <width>241</width>
      <height>20</height>

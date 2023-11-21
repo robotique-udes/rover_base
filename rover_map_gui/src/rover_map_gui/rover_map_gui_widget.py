@@ -1,19 +1,12 @@
 from __future__ import (print_function, absolute_import, division, unicode_literals)
 
 import os
-import sys
-import typing
 import rospkg
 import rospy
-import rosservice
 from python_qt_binding import loadUi
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QPushButton, QComboBox, QApplication, QDoubleSpinBox, QLineEdit, QWidget, QFileDialog, QGraphicsScene
-from robotnik_msgs.msg import inputs_outputs
-from robotnik_msgs.srv import set_digital_output
-from std_srvs.srv import SetBool
-from datetime import datetime
+from PyQt5.QtWidgets import QPushButton, QLineEdit, QGraphicsScene
 from threading import Lock
 import math
 from rover_control_msgs.msg import gps
@@ -73,7 +66,7 @@ class RoverMapGuiWidget(QtWidgets.QWidget):
 
         self.gv_map.setScene(self.scene)
 
-        ## Subscribe to the GPS data topic
+        # Subscribe to the GPS data topic
         self.sub_gps = rospy.Subscriber("/gps_data", gps, self.cbGPSData)
         # Set up a timer to update the rover's position on the map
         self.position_updater = rospy.Timer(rospy.Duration(0.50), lambda x: self.updateCurrentPosition(self.position_updater))
@@ -128,12 +121,9 @@ class RoverMapGuiWidget(QtWidgets.QWidget):
             'y': self.p0.scrY + (self.p1.scrY - self.p0.scrY)*perY
         }
     
-    
     def closePopUp(self):
         self.hide()
         # Consider not using `del self` unless absolutely necessary
-
-
 
 class ReferencePoint:
     def __init__(self, scrX, scrY, lat, lng):
